@@ -49,7 +49,7 @@ export default function App() {
         </View>
         <ScrollView style={styles.goalList}>
           {goalList.map(item => (
-            <Goal text={item} onPress={goalRemoveHandler} />
+            <Goal key={item} text={item} onPress={goalRemoveHandler} />
           ))}
         </ScrollView>
       </View>
