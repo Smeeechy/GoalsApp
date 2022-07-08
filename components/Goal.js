@@ -1,10 +1,14 @@
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 
 const Goal = props => {
+    const pressHandler = () => {
+        props.onPress(props.text)
+    }
+
   return (
-    <View style={styles.goal}>
+    <TouchableOpacity onPress={pressHandler} style={styles.goal}>
       <Text style={styles.text}>{props.text}</Text>
-    </View>
+    </TouchableOpacity>
   )
 }
 
