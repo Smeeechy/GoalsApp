@@ -1,29 +1,39 @@
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Pressable } from 'react-native'
 
 const Goal = props => {
-    const pressHandler = () => {
-        props.onPress(props.text)
-    }
+  const pressHandler = () => {
+    props.onPress(props.id)
+  }
 
   return (
-    <TouchableOpacity onPress={pressHandler} style={styles.goal}>
-      <Text style={styles.text}>{props.text}</Text>
-    </TouchableOpacity>
+    <View style={styles.goal}>
+      <Pressable
+        onPress={pressHandler}
+        style={({ pressed }) => {
+          pressed && styles.pressedItem
+        }}
+      >
+        <Text style={styles.text}>{props.text}</Text>
+      </Pressable>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   goal: {
     backgroundColor: 'beige',
-    padding: 10,
-    paddingHorizontal: 15,
     margin: 5,
     borderRadius: 5,
     transform: [{ rotate: '-2deg' }]
   },
   text: {
-      fontFamily: 'Avenir',
-      fontWeight: 'bold'
+    padding: 10,
+    paddingHorizontal: 15,
+    fontFamily: 'Avenir',
+    fontWeight: 'bold'
+  },
+  pressedItem: {
+    opacity: 0.5
   }
 })
 

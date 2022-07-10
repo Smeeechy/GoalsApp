@@ -1,31 +1,28 @@
 import { useState } from 'react'
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Button
-} from 'react-native'
-import Goal from './components/Goal'
+import { StyleSheet, Text, View, SafeAreaView, Button } from 'react-native'
+import GoalInput from './components/GoalInput'
+import GoalsList from './components/GoalsList'
 
 export default function App() {
-  const [goal, setGoal] = useState('')
+  const [showModal, setShowModal] = useState(false)
   const [goalList, setGoalList] = useState([])
 
-  const inputChangeHandler = value => {
-    setGoal(value)
+  const addGoalHandler = goalText => {
+    if (goalText.length === 0) return
+    setGoalList(prev => [...prev, { text: goalText, id: Math.random() }])
+    setShowModal(false)
   }
 
-  const buttonPressHandler = event => {
-    if (goal.length === 0) return
-    setGoalList(prev => [...prev, goal])
-    setGoal('')
+  const addNewGoalHandler = () => {
+    setShowModal(true)
   }
 
-  const goalRemoveHandler = goal => {
-    setGoalList(prev => prev.filter(item => item !== goal))
+  const cancelAddHandler = () => {
+    setShowModal(false)
+  }
+
+  const goalRemoveHandler = id => {
+    setGoalList(prev => prev.filter(item => item.id !== id))
   }
 
   return (
@@ -36,30 +33,13 @@ export default function App() {
             <Text style={styles.title}>Goals!</Text>
           </View>
         </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            value={goal}
-            onChangeText={inputChangeHandler}
-            placeholder='goal go here'
-          />
-          <Button
-            style={styles.button}
-            onPress={buttonPressHandler}
-            title='add goal'
-          />
-        </View>
-        <View style={styles.goalList}>
-          <ScrollView>
-            {goalList.map(item => (
-              <Goal
-                key={Math.random()}
-                text={item}
-                onPress={goalRemoveHandler}
-              />
-            ))}
-          </ScrollView>
-        </View>
+        <Button title='add new goal' onPress={addNewGoalHandler} />
+        <GoalInput
+          onConfirm={addGoalHandler}
+          onCancel={cancelAddHandler}
+          modalVisible={showModal}
+        />
+        <GoalsList goalList={goalList} onPress={goalRemoveHandler} />
       </View>
     </SafeAreaView>
   )
@@ -74,55 +54,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flex: 1
   },
-  inputContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 20
-  },
-  textInput: {
-    backgroundColor: 'white',
-    flex: 4,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
-    marginRight: 8,
-    padding: 8
-  },
-  button: {
-    flex: 1
-  },
-  goalList: {
-    flex: 11,
-    padding: 10,
-    backgroundColor: 'skyblue',
-    borderRadius: 15,
-    marginTop: 10,
-    transform: [{ rotate: '2deg' }]
-  },
   title: {
     paddingHorizontal: 20,
-    fontFamily: 'Bodoni 72 Smallcaps',
+    fontFamily: 'Bodoni 72',
     fontSize: 42,
     color: 'navy',
-    transform: [{ rotate: '3deg' }, { skewX: '15deg' }]
+    transform: [{ rotate: '2deg' }, { skewX: '-25deg' }]
   },
   header: {
     flex: 2,
     flexDirection: 'row',
     justifyContent: 'center',
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: 'khaki',
     padding: 15,
-    transform: [{ skewX: '-30deg' }, { skewY: 'deg' }, { rotate: '-10deg' }]
+    transform: [{ rotate: '-7deg' }, { skewX: '10deg' }]
   },
   headerHighlight: {
+    marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: 'plum',
-    borderRadius: 10,
+    borderRadius: 5,
     marginHorizontal: 80,
-    transform: [{ rotate: '5deg' }, { skewX: '10deg' }]
+    transform: [{ rotate: '5deg' }, { skewX: '5deg' }]
   }
 })
